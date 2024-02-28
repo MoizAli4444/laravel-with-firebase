@@ -6,6 +6,7 @@
 /storage/*.key
 /vendor
 .env
+.blog-firebase-sdk.json
 .env.backup
 .env.production
 .phpunit.result.cache

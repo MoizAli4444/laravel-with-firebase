@@ -21,12 +21,13 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('user.store') }}">
+        <form method="POST" action="{{ route('user.update', $user['id']) }}">
             @csrf
+            @method('PUT') <!-- This is required for Laravel to recognize the method as PUT/PATCH -->
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" minlength="3" maxlength="25"
-                    required value="{{ old('name') }}">
+                    required value="{{ old('name', $user['name']) }}">
                 @error('name')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -34,7 +35,7 @@
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" name="email" required
-                    value="{{ old('email') }}">
+                    value="{{ old('email', $user['email']) }}">
                 @error('email')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -43,9 +44,12 @@
                 <label for="role" class="form-label">Role</label>
                 <select class="form-select" name="role" id="role" aria-label="Default select example" required>
                     <option value="" disabled>Select Role</option>
-                    <option value="Plumber" {{ old('role') === 'Plumber' ? 'selected' : '' }}>Plumber</option>
-                    <option value="Carpenter" {{ old('role') === 'Carpenter' ? 'selected' : '' }}>Carpenter</option>
-                    <option value="Mechanic" {{ old('role') === 'Mechanic' ? 'selected' : '' }}>Mechanic</option>
+                    <option value="Plumber" {{ old('role', $user['role']) === 'Plumber' ? 'selected' : '' }}>Plumber
+                    </option>
+                    <option value="Carpenter" {{ old('role', $user['role']) === 'Carpenter' ? 'selected' : '' }}>Carpenter
+                    </option>
+                    <option value="Mechanic" {{ old('role', $user['role']) === 'Mechanic' ? 'selected' : '' }}>Mechanic
+                    </option>
                 </select>
                 @error('role')
                     <div class="text-danger">{{ $message }}</div>

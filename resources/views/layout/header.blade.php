@@ -4,8 +4,8 @@
             href="{{ route('task.list') }}">Task</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('user.list') ? ' active fw-bold' : ' text-dark' }}"
-            href="{{ route('user.list') }}">User</a>
+        <a class="nav-link {{ request()->routeIs('user.index') ? ' active fw-bold' : ' text-dark' }}"
+            href="{{ route('user.index') }}">User</a>
     </li>
 
 </ul>
