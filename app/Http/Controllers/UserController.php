@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
+use Google\Cloud\Core\Timestamp;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -25,7 +28,7 @@ class UserController extends Controller
         // Convert Firestore documents to an array
         $users = [];
         foreach ($documents as $document) {
-            $users[] = $document->data();
+            $users[$document->id()] = $document->data();
         }
         // return $users;
         return view('pages.user.index', compact('users'));
@@ -66,18 +69,36 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id = "")
     {
-        //
+        $snapshot = $this->firestoreDB->collection('users')->document($id)->snapshot();
+
+        if ($snapshot->exists()) {
+            $user = $snapshot->data();
+            $user['id'] = $id; // Add the ID to the data array
+            return view('pages.user.edit', compact('user'));
+        } else {
+            return redirect()->route('user.index');
+        }
     }
+
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        try {
+            $fieldsToUpdate = $request->except('_token');
+            $this->firestoreDB->collection('users')->document($id)->set($fieldsToUpdate, ['merge' => true]);
+            return redirect()->route('user.index')->with('success', 'User updated successfully.');
+        } catch (\Exception $e) {
+            return $e;
+            return redirect()->back()->with('error', 'Failed to update user. Please try again later.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
