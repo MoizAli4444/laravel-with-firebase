@@ -40,7 +40,18 @@
                     <td>
                         <a class="text-info" href="{{ route('user.edit', ['id' => $key]) }}" target="_self"><i
                                 class="bi bi-pencil-square"></i></a>
-                        <a class="text-danger" href="" target="_self"><i class="bi bi-trash-fill"></i></a>
+                        <a class="text-danger" href="#"
+                            onclick="if(confirm('Are you sure you want to delete this user?')) {event.preventDefault(); document.getElementById('deleteForm{{ $key }}').submit();}">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+
+                        <form id="deleteForm{{ $key }}" action="{{ route('user.destroy', ['id' => $key]) }}"
+                            method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+
+
 
                     </td>
                 </tr>
