@@ -105,6 +105,11 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->firestoreDB->collection('users')->document($id)->delete();
+            return redirect()->route('user.index')->with('success', 'User deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete user. Please try again later.');
+        }
     }
 }
