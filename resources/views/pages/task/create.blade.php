@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="d-flex justify-content-end py-2">
-        <a href="{{ route('user.index') }}" class="btn btn-sm btn-info">View Users</a>
+        <a href="{{ route('task.index') }}" class="btn btn-sm btn-info">View Tasks</a>
     </div>
 
     <div class="py-2">

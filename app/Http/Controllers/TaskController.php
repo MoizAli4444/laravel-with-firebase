@@ -18,7 +18,16 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('pages.task.index');
+        // Fetch all documents from the Firestore collection
+        $documents = $this->firestoreDB->collection('tasks')->documents();
+
+        // Convert Firestore documents to an array
+        $tasks = [];
+        foreach ($documents as $document) {
+            $tasks[$document->id()] = $document->data();
+        }
+        // return $tasks;
+        return view('pages.task.index', compact('tasks'));
     }
 
     /**
@@ -55,9 +64,22 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id = '')
     {
-        //
+        $snapshot = $this->firestoreDB->collection('tasks')->document($id)->snapshot();
+
+        if ($snapshot->exists()) {
+            $task = $snapshot->data();
+            $task['id'] = $id; // Add the ID to the data array
+            $snapshot = $this->firestoreDB->collection('users')->document($task['assignee_id'])->snapshot();
+            if ($snapshot->exists()) {
+                $task['assignee'] = $snapshot->data()['name'];
+            }
+            // return $task;
+            return view('pages.task.show', compact('task'));
+        } else {
+            return redirect()->route('task.index');
+        }
     }
 
     /**
@@ -81,6 +103,11 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->firestoreDB->collection('tasks')->document($id)->delete();
+            return redirect()->route('task.index')->with('success', 'Task deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete task. Please try again later.');
+        }
     }
 }
