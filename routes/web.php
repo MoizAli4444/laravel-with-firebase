@@ -20,9 +20,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'task', 'as' => 'task.'], function () {
-    Route::get('/', [TaskController::class, 'index'])->name('list');
+    Route::get('/', [TaskController::class, 'index'])->name('index');
     Route::get('/create', [TaskController::class, 'create'])->name('create');
     Route::post('/store', [TaskController::class, 'store'])->name('store');
+    Route::get('/edit/{id?}', [TaskController::class, 'edit'])->name('edit');
+    Route::get('/show/{id?}', [TaskController::class, 'show'])->name('show');
+    Route::put('/update/{id?}', [TaskController::class, 'update'])->name('update');
+    Route::delete('/delete/{id?}', [TaskController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
