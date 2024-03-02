@@ -3,23 +3,12 @@
 
 @section('content')
     <div class="d-flex justify-content-end py-2">
-        <a href="{{ route('task.index') }}" class="btn btn-sm btn-info">View Tasks</a>
+        <a href="{{ route('task.index') }}" class="btn btn-sm btn-info fw-bold">View Tasks</a>
     </div>
 
     <div class="py-2">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success !</strong> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        @include('layout.alert')
 
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error !</strong> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
 
         <form method="POST" action="{{ route('task.store') }}">
             @csrf

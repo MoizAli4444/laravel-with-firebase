@@ -16,7 +16,7 @@ use App\Http\Controllers\TaskController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('task.index');
 });
 
 Route::group(['prefix' => 'task', 'as' => 'task.'], function () {

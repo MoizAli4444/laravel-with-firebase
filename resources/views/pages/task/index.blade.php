@@ -3,26 +3,14 @@
 
 @section('content')
     <div class="d-flex justify-content-end py-2">
-        <a href="{{ route('task.create') }}" class="btn btn-sm btn-info">Add Task</a>
+        <a href="{{ route('task.create') }}" class="btn btn-sm btn-info fw-bold">Add Task</a>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success !</strong> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error !</strong> {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    @include('layout.alert')
 
     <table class="table border">
         <thead>
-            <tr>
+            <tr class="table-dark">
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">Due Date</th>
