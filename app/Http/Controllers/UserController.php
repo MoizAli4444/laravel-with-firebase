@@ -90,7 +90,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string $id)
     {
         try {
-            $fieldsToUpdate = $request->except('_token');
+            $fieldsToUpdate = $request->except(['_token', '_method']);
             $this->firestoreDB->collection('users')->document($id)->set($fieldsToUpdate, ['merge' => true]);
             return redirect()->route('user.index')->with('success', 'User updated successfully.');
         } catch (\Exception $e) {
